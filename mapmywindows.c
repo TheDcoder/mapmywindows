@@ -9,20 +9,20 @@ int main(void) {
 	if (xdo_instance == NULL) return EXIT_FAILURE;
 	
 	// Get active window
-	Window window_instance;
-	xdo_get_active_window(xdo_instance, &window_instance);
+	Window active_window;
+	xdo_get_active_window(xdo_instance, &active_window);
 	
 	// Store the window location
 	int window_x, window_y;
-	xdo_get_window_location(xdo_instance, window_instance, &window_x, &window_y, NULL);
+	xdo_get_window_location(xdo_instance, active_window, &window_x, &window_y, NULL);
 	
 	// Hide the window for 1 second and show it again
-	xdo_unmap_window(xdo_instance, window_instance);
+	xdo_unmap_window(xdo_instance, active_window);
 	sleep(1);
-	xdo_map_window(xdo_instance, window_instance);
+	xdo_map_window(xdo_instance, active_window);
 	
 	// Restore the window's position
-	xdo_move_window(xdo_instance, window_instance, window_x, window_y);
+	xdo_move_window(xdo_instance, active_window, window_x, window_y);
 	
 	// Cleanup and exit
 	xdo_free(xdo_instance);
