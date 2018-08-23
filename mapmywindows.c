@@ -1,4 +1,5 @@
 #include <stddef.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <xdo.h>
@@ -6,7 +7,10 @@
 int main(void) {
 	// Create a new xdo instance and establish connection with X display server
 	xdo_t *xdo_instance = xdo_new(NULL);
-	if (xdo_instance == NULL) return EXIT_FAILURE;
+	if (xdo_instance == NULL) {
+		puts("Failed to start xdo!");
+		return EXIT_FAILURE;
+	};
 	
 	// Get active window
 	Window active_window;
