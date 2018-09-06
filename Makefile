@@ -1,7 +1,7 @@
 compiler = gcc
 program = mapmywindows
 
-mapmywindows: $(program).c
+$(program): $(program).c
 	$(compiler) -lxdo -Wall -o $(program) $(program).c
 
 install: $(program)
