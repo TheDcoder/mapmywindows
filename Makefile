@@ -6,6 +6,9 @@ $(program): $(program).c
 
 install: $(program)
 	cp $(program) /usr/bin
-
+	
+uninstall:
+	rm /usr/bin/$(program)
+	
 clean: $(program)
 	rm $(program)
