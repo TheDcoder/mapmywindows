@@ -20,15 +20,15 @@ xdo_t *xdo_instance;
 struct window_node *current_window = NULL;
 
 int main(void) {
-	// Get the current X display
+	// Establish connection with X display server and get the current X display
 	Display *display = XOpenDisplay(NULL);
 	if (display == NULL) {
 		puts("Failed to get current X display");
 		return EXIT_FAILURE;
 	}
 	
-	// Create a new xdo instance and establish connection with X display server
-	xdo_instance = xdo_new(NULL);
+	// Create a new xdo instance
+	xdo_instance = xdo_new_with_opened_display(display, NULL, true);
 	if (xdo_instance == NULL) {
 		puts("Failed to start xdo!");
 		return EXIT_FAILURE;
