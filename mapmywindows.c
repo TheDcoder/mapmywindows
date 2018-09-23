@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <X11/Xlib.h>
 #include <xdo.h>
+#include "keyboard_shortcuts.h"
 
 struct window_node {
 	Window wid;
@@ -18,6 +19,10 @@ void show_window(void);
 
 xdo_t *xdo_instance;
 struct window_node *current_window = NULL;
+
+char *hide_shortcut = "Ctrl+Shift+F7";
+char *show_shortcut = "Ctrl+Shift+F8";
+char *exit_shortcut = "Ctrl+Shift+F9";
 
 int main(void) {
 	// Establish connection with X display server and get the current X display
@@ -35,14 +40,21 @@ int main(void) {
 	};
 	
 	// Grab the keys (keyboard shortcuts/macros)
-	KeyCode hide_key = XKeysymToKeycode(display, XStringToKeysym("F7"));
-	KeyCode show_key = XKeysymToKeycode(display, XStringToKeysym("F8"));
-	KeyCode exit_key = XKeysymToKeycode(display, XStringToKeysym("F9"));
-	
+	KeySym key_symbol;
+	unsigned int modifiers;
 	Window root_window = DefaultRootWindow(display);
-	XGrabKey(display, hide_key, Mod1Mask, root_window, true, GrabModeAsync, GrabModeAsync);
-	XGrabKey(display, show_key, Mod1Mask, root_window, true, GrabModeAsync, GrabModeAsync);
-	XGrabKey(display, exit_key, Mod1Mask, root_window, true, GrabModeAsync, GrabModeAsync);
+	
+	parse_shortcut(hide_shortcut, &key_symbol, &modifiers);
+	KeyCode hide_key = XKeysymToKeycode(display, key_symbol);
+	XGrabKey(display, hide_key, modifiers, root_window, true, GrabModeAsync, GrabModeAsync);
+	
+	parse_shortcut(show_shortcut, &key_symbol, &modifiers);
+	KeyCode show_key = XKeysymToKeycode(display, key_symbol);
+	XGrabKey(display, show_key, modifiers, root_window, true, GrabModeAsync, GrabModeAsync);
+	
+	parse_shortcut(exit_shortcut, &key_symbol, &modifiers);
+	KeyCode exit_key = XKeysymToKeycode(display, key_symbol);
+	XGrabKey(display, exit_key, modifiers, root_window, true, GrabModeAsync, GrabModeAsync);
 	
 	// Wait for events (X event loop)
 	XEvent event;
