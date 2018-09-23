@@ -2,6 +2,7 @@
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include <X11/Xlib.h>
 #include <xdo.h>
 #include "keyboard_shortcuts.h"
@@ -14,6 +15,7 @@ struct window_node {
 	struct window_node *next;
 };
 
+void process_cmdline_options(int argc, char *argv[]);
 void hide_window(void);
 void show_window(void);
 
@@ -24,7 +26,10 @@ char *hide_shortcut = "Ctrl+Shift+F7";
 char *show_shortcut = "Ctrl+Shift+F8";
 char *exit_shortcut = "Ctrl+Shift+F9";
 
-int main(void) {
+int main(int argc, char *argv[]) {
+	// Process the supplied command-line options
+	process_cmdline_options(argc, argv);
+	
 	// Establish connection with X display server and get the current X display
 	Display *display = XOpenDisplay(NULL);
 	if (display == NULL) {
@@ -72,6 +77,26 @@ int main(void) {
 			xdo_free(xdo_instance);
 			puts("Exiting!");
 			return EXIT_SUCCESS;
+		}
+	}
+}
+
+void process_cmdline_options(int argc, char *argv[]) {
+	int option;
+	while ((option = getopt(argc, argv, "h:s:x:")) != -1) {
+		switch (option) {
+			case 'h':
+				hide_shortcut = optarg;
+				printf("Hide shortcut: %s\n", optarg);
+				break;
+			case 's':
+				show_shortcut = optarg;
+				printf("Show shortcut: %s\n", optarg);
+				break;
+			case 'x':
+				exit_shortcut = optarg;
+				printf("Exit shortcut: %s\n", optarg);
+				break;
 		}
 	}
 }
