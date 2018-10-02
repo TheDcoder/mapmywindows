@@ -1,0 +1,3 @@
+[submodule "xkeymacro"]
+	path = xkeymacro
+	url = https://github.com/TheDcoder/libxkeymacro

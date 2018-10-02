@@ -5,7 +5,7 @@
 #include <unistd.h>
 #include <X11/Xlib.h>
 #include <xdo.h>
-#include "keyboard_shortcuts.h"
+#include "xkeymacro/xkeymacro.h"
 
 struct window_node {
 	Window wid;
@@ -49,15 +49,15 @@ int main(int argc, char *argv[]) {
 	unsigned int modifiers;
 	Window root_window = DefaultRootWindow(display);
 	
-	parse_shortcut(hide_shortcut, &key_symbol, &modifiers);
+	xkeymacro_parse(hide_shortcut, &key_symbol, &modifiers);
 	KeyCode hide_key = XKeysymToKeycode(display, key_symbol);
 	XGrabKey(display, hide_key, modifiers, root_window, true, GrabModeAsync, GrabModeAsync);
 	
-	parse_shortcut(show_shortcut, &key_symbol, &modifiers);
+	xkeymacro_parse(show_shortcut, &key_symbol, &modifiers);
 	KeyCode show_key = XKeysymToKeycode(display, key_symbol);
 	XGrabKey(display, show_key, modifiers, root_window, true, GrabModeAsync, GrabModeAsync);
 	
-	parse_shortcut(exit_shortcut, &key_symbol, &modifiers);
+	xkeymacro_parse(exit_shortcut, &key_symbol, &modifiers);
 	KeyCode exit_key = XKeysymToKeycode(display, key_symbol);
 	XGrabKey(display, exit_key, modifiers, root_window, true, GrabModeAsync, GrabModeAsync);
 	
