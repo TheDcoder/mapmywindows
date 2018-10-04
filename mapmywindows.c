@@ -36,6 +36,7 @@ int main(int argc, char *argv[]) {
 		puts("Failed to get current X display");
 		return EXIT_FAILURE;
 	}
+	struct XKeyMacroInstance xkeymacro_instance = {.display = display};
 	
 	// Create a new xdo instance
 	xdo_instance = xdo_new_with_opened_display(display, NULL, true);
@@ -45,21 +46,19 @@ int main(int argc, char *argv[]) {
 	};
 	
 	// Grab the keys (keyboard shortcuts/macros)
-	KeySym key_symbol;
-	unsigned int modifiers;
 	Window root_window = DefaultRootWindow(display);
 	
-	xkeymacro_parse(hide_shortcut, &key_symbol, &modifiers);
-	KeyCode hide_key = XKeysymToKeycode(display, key_symbol);
-	XGrabKey(display, hide_key, modifiers, root_window, true, GrabModeAsync, GrabModeAsync);
+	struct XKeyMacro hide_macro;
+	xkeymacro_parse(hide_shortcut, &hide_macro, &xkeymacro_instance);
+	XGrabKey(display, hide_macro.code, hide_macro.modifiers, root_window, true, GrabModeAsync, GrabModeAsync);
 	
-	xkeymacro_parse(show_shortcut, &key_symbol, &modifiers);
-	KeyCode show_key = XKeysymToKeycode(display, key_symbol);
-	XGrabKey(display, show_key, modifiers, root_window, true, GrabModeAsync, GrabModeAsync);
+	struct XKeyMacro show_macro;
+	xkeymacro_parse(show_shortcut, &show_macro, &xkeymacro_instance);
+	XGrabKey(display, show_macro.code, show_macro.modifiers, root_window, true, GrabModeAsync, GrabModeAsync);
 	
-	xkeymacro_parse(exit_shortcut, &key_symbol, &modifiers);
-	KeyCode exit_key = XKeysymToKeycode(display, key_symbol);
-	XGrabKey(display, exit_key, modifiers, root_window, true, GrabModeAsync, GrabModeAsync);
+	struct XKeyMacro exit_macro;
+	xkeymacro_parse(exit_shortcut, &exit_macro, &xkeymacro_instance);
+	XGrabKey(display, exit_macro.code, exit_macro.modifiers, root_window, true, GrabModeAsync, GrabModeAsync);
 	
 	// Wait for events (X event loop)
 	XEvent event;
@@ -68,11 +67,11 @@ int main(int argc, char *argv[]) {
 		XNextEvent(display, &event);
 		if (event.type != KeyPress) continue;
 		pressed_key = event.xkey.keycode;
-		if (pressed_key == hide_key) {
+		if (pressed_key == hide_macro.code) {
 			hide_window();
-		} else if (pressed_key == show_key) {
+		} else if (pressed_key == show_macro.code) {
 			show_window();
-		} else if (pressed_key == exit_key) {
+		} else if (pressed_key == exit_macro.code) {
 			// Cleanup and exit
 			xdo_free(xdo_instance);
 			puts("Exiting!");
