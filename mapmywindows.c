@@ -2,6 +2,7 @@
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdnoreturn.h>
 #include <unistd.h>
 #include <X11/Xlib.h>
 #include <xdo.h>
@@ -15,6 +16,7 @@ struct window_node {
 	struct window_node *next;
 };
 
+void noreturn print_help(void);
 void process_cmdline_options(int argc, char *argv[]);
 void hide_window(void);
 void show_window(void);
@@ -79,11 +81,20 @@ int main(int argc, char *argv[]) {
 	}
 }
 
+void noreturn print_help(void) {
+	puts("Just read the README.md file, writing usage instructions in a string literal is a chore so I am not doing it.");
+	exit(EXIT_SUCCESS);
+}
+
 void process_cmdline_options(int argc, char *argv[]) {
 	int option;
-	while ((option = getopt(argc, argv, "h:s:x:")) != -1) {
+	while ((option = getopt(argc, argv, "hd:s:x:")) != -1) {
 		switch (option) {
 			case 'h':
+			case '?':
+				print_help();
+				break;
+			case 'd':
 				hide_shortcut = optarg;
 				printf("Hide shortcut: %s\n", optarg);
 				break;
