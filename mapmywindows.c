@@ -48,32 +48,26 @@ int main(int argc, char *argv[]) {
 	};
 	
 	// Grab the keys (keyboard shortcuts/macros)
-	struct XKeyMacro hide_macro;
-	xkeymacro_parse(hide_shortcut, &hide_macro, xkeymacro_instance);
-	xkeymacro_add(xkeymacro_instance, &hide_macro, true);
+	struct XKeyMacro *hide_macro = xkeymacro_parse(hide_shortcut, xkeymacro_instance);
+	xkeymacro_add(xkeymacro_instance, hide_macro, true);
 	
-	struct XKeyMacro show_macro;
-	xkeymacro_parse(show_shortcut, &show_macro, xkeymacro_instance);
-	xkeymacro_add(xkeymacro_instance, &show_macro, true);
+	struct XKeyMacro *show_macro = xkeymacro_parse(show_shortcut, xkeymacro_instance);
+	xkeymacro_add(xkeymacro_instance, show_macro, true);
 	
-	struct XKeyMacro exit_macro;
-	xkeymacro_parse(exit_shortcut, &exit_macro, xkeymacro_instance);
-	xkeymacro_add(xkeymacro_instance, &exit_macro, true);
+	struct XKeyMacro *exit_macro = xkeymacro_parse(exit_shortcut, xkeymacro_instance);
+	xkeymacro_add(xkeymacro_instance, exit_macro, true);
 	
 	// Wait for events (X event loop)
 	struct XKeyMacro *macro;
 	while (true) {
 		macro = xkeymacro_next_event(xkeymacro_instance);
-		if (macro == &hide_macro) {
+		if (macro == hide_macro) {
 			hide_window();
-		} else if (macro == &show_macro) {
+		} else if (macro == show_macro) {
 			show_window();
-		} else if (macro == &exit_macro) {
+		} else if (macro == exit_macro) {
 			// Cleanup and exit
-			xkeymacro_remove(xkeymacro_instance, &hide_macro, true);
-			xkeymacro_remove(xkeymacro_instance, &show_macro, true);
-			xkeymacro_remove(xkeymacro_instance, &exit_macro, true);
-			free(xkeymacro_instance);
+			xkeymacro_free(xkeymacro_instance);
 			xdo_free(xdo_instance);
 			puts("Exiting!");
 			return EXIT_SUCCESS;
