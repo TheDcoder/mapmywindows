@@ -48,14 +48,9 @@ int main(int argc, char *argv[]) {
 	};
 	
 	// Grab the keys (keyboard shortcuts/macros)
-	struct XKeyMacro *hide_macro = xkeymacro_parse(hide_shortcut, xkeymacro_instance);
-	xkeymacro_add(xkeymacro_instance, hide_macro, true);
-	
-	struct XKeyMacro *show_macro = xkeymacro_parse(show_shortcut, xkeymacro_instance);
-	xkeymacro_add(xkeymacro_instance, show_macro, true);
-	
-	struct XKeyMacro *exit_macro = xkeymacro_parse(exit_shortcut, xkeymacro_instance);
-	xkeymacro_add(xkeymacro_instance, exit_macro, true);
+	struct XKeyMacro *hide_macro = xkeymacro_add_simple(xkeymacro_instance, hide_shortcut);
+	struct XKeyMacro *show_macro = xkeymacro_add_simple(xkeymacro_instance, show_shortcut);
+	struct XKeyMacro *exit_macro = xkeymacro_add_simple(xkeymacro_instance, exit_shortcut);
 	
 	// Wait for events (X event loop)
 	struct XKeyMacro *macro;
