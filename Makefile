@@ -2,7 +2,7 @@ compiler = gcc
 program = mapmywindows
 
 $(program): $(program).c
-	$(compiler) -lX11 -lxdo -Wall -o $(program) xkeymacro/xkeymacro.c $(program).c
+	$(compiler) -Wall -o $(program) xkeymacro/xkeymacro.c $(program).c -lX11 -lxdo
 	
 install: $(program)
 	cp $(program) /usr/bin
