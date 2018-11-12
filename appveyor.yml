@@ -1,0 +1,16 @@
+version: 0.1.{build}
+
+image: Ubuntu1804
+
+install:
+- sh: |
+    git submodule init
+    git submodule update
+    sudo apt-get --assume-yes install libxdo3 libxdo-dev libx11-6 libx11-dev
+
+build_script:
+- sh: make
+
+artifacts:
+- path: mapmywindows
+  name: Main Binary

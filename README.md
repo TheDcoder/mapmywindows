@@ -1,5 +1,7 @@
 # mapmywindows
 
+[![Build status](https://ci.appveyor.com/api/projects/status/phnu2603i6v8c1te?svg=true)](https://ci.appveyor.com/project/TheDcoder/mapmywindows)
+
 A small progarm to show and hide windows in X window system. Most Linux distributions use a display server with X window system, you can easily hide and show windows using this program.
 
 ## Usage
