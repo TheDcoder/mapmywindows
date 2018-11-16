@@ -1,9 +1,9 @@
+#include <getopt.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdnoreturn.h>
-#include <unistd.h>
 #include <X11/Xlib.h>
 #include <xdo.h>
 #include "xkeymacro/xkeymacro.h"
@@ -16,7 +16,7 @@ struct window_node {
 	struct window_node *next;
 };
 
-void noreturn print_help(void);
+void noreturn print_help(bool error);
 void process_cmdline_options(int argc, char *argv[]);
 void hide_window(void);
 void show_window(void);
@@ -70,33 +70,43 @@ int main(int argc, char *argv[]) {
 	}
 }
 
-void noreturn print_help(void) {
+void noreturn print_help(bool error) {
+	if (!error) puts(
+		"mapmywindows - A small progarm to show and hide windows in X window system"
+	);
 	puts(
-		"mapmywindows - A small progarm to show and hide windows in X window system\n"
 		"\n"
 		"Usage:\n"
 		"mapmywindows [-d \"macro\"] [-s \"macro\"] [-x \"macro\"]\n"
 		"mapmywindows [-h]\n"
 		"\n"
 		"Options:\n"
-		"	-d        Set the hide shortcut/macro (Default: Ctrl+Shift+F7)\n"
-		"	-s        Set the show shortcut/macro (Default: Ctrl+Shift+F8)\n"
-		"	-x        Set the exit shortcut/macro (Default: Ctrl+Shift+F9)\n"
-		"	-h        Show this help text\n"
+		"	-d, --hide-key        Set the hide shortcut/macro (Default: Ctrl+Shift+F7)\n"
+		"	-s, --show-key        Set the show shortcut/macro (Default: Ctrl+Shift+F8)\n"
+		"	-x, --exit-key        Set the exit shortcut/macro (Default: Ctrl+Shift+F9)\n"
+		"	-h, --help            Show this help text\n"
 		"\n"
 		"Examples:\n"
-		"	mapmywindows -d \"Ctrl+Shift+F1\" -s \"Ctrl+Shift+F2\"    Change the default hide and show shortcuts"
+		"	mapmywindows -d \"Ctrl+Shift+F1\" -s \"Ctrl+Shift+F2\"    Change the default hide and show shortcuts\n"
+		"	mapmywindows --hide-key \"Ctrl+Shift+F1\""
 	);
-	exit(EXIT_SUCCESS);
+	exit(error ? EXIT_FAILURE : EXIT_SUCCESS);
 }
 
 void process_cmdline_options(int argc, char *argv[]) {
+	struct option long_options[] = {
+		{"help", no_argument, NULL, 'h'},
+		{"hide-key", required_argument, NULL, 'd'},
+		{"show-key", required_argument, NULL, 's'},
+		{"exit-key", required_argument, NULL, 'x'},
+		{NULL, 0, NULL, 0}
+	};
 	int option;
-	while ((option = getopt(argc, argv, "hd:s:x:")) != -1) {
+	while ((option = getopt_long(argc, argv, "hd:s:x:", long_options, NULL)) != -1) {
 		switch (option) {
 			case 'h':
 			case '?':
-				print_help();
+				print_help(option == '?');
 				break;
 			case 'd':
 				hide_shortcut = optarg;
