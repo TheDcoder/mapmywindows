@@ -71,7 +71,22 @@ int main(int argc, char *argv[]) {
 }
 
 void noreturn print_help(void) {
-	puts("Just read the README.md file, writing usage instructions in a string literal is a chore so I am not doing it.");
+	puts(
+		"mapmywindows - A small progarm to show and hide windows in X window system\n"
+		"\n"
+		"Usage:\n"
+		"mapmywindows [-d \"macro\"] [-s \"macro\"] [-x \"macro\"]\n"
+		"mapmywindows [-h]\n"
+		"\n"
+		"Options:\n"
+		"	-d        Set the hide shortcut/macro (Default: Ctrl+Shift+F7)\n"
+		"	-s        Set the show shortcut/macro (Default: Ctrl+Shift+F8)\n"
+		"	-x        Set the exit shortcut/macro (Default: Ctrl+Shift+F9)\n"
+		"	-h        Show this help text\n"
+		"\n"
+		"Examples:\n"
+		"	mapmywindows -d \"Ctrl+Shift+F1\" -s \"Ctrl+Shift+F2\"    Change the default hide and show shortcuts"
+	);
 	exit(EXIT_SUCCESS);
 }
 

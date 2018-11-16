@@ -12,22 +12,7 @@ A small progarm to show and hide windows in X window system. Most Linux distribu
 2. `Ctrl+Shift+F8` - Show the last hidden window
 3. `Ctrl+Shift+F9` - Exit the program
 
-You can configure these combinations via the command-line parameters:
-
-```
-mapmywindows [-d "macro"] [-s "macro"] [-x "macro"]
-mapmywindows [-h]
-
-Options:
-	-d        Set the hide shortcut/macro
-	-s        Set the show shortcut/macro
-	-x        Set the exit shortcut/macro
-	-h        Show the help text, which kindly points to read this file :)
-
-Examples:
-	mapmywindows -d "Ctrl+Shift+F1" -s "Ctrl+Shift+F2"    Change the default hide and show shortcuts
-	mapmywindows -h                                       Show the not very helpful help text
-```
+For more use `mapmywindows -h` to display the help text with usage syntax and options.
 
 ## Compiling and Installing
 
