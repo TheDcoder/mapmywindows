@@ -18,7 +18,7 @@ struct window_node {
 	struct window_node *next;
 };
 
-void noreturn print_help(bool error);
+void noreturn print_help(bool error, char *program_name);
 void process_cmdline_options(int argc, char *argv[]);
 void hide_window(void);
 void show_window(void);
@@ -72,15 +72,12 @@ int main(int argc, char *argv[]) {
 	}
 }
 
-void noreturn print_help(bool error) {
+void noreturn print_help(bool error, char *program_name) {
 	if (!error) puts(
 		"mapmywindows - A small progarm to show and hide windows in X window system"
 	);
+	printf("\nUsage: %s [OPTION]\n", program_name);
 	puts(
-		"\n"
-		"Usage:\n"
-		"mapmywindows [-d \"macro\"] [-s \"macro\"] [-x \"macro\"]\n"
-		"mapmywindows [-h]\n"
 		"\n"
 		"Options:\n"
 		"	-d, --hide-key        Set the hide shortcut/macro (Default: Ctrl+Shift+F7)\n"
@@ -91,7 +88,8 @@ void noreturn print_help(bool error) {
 		"\n"
 		"Examples:\n"
 		"	mapmywindows -d \"Ctrl+Shift+F1\" -s \"Ctrl+Shift+F2\"    Change the default hide and show shortcuts\n"
-		"	mapmywindows --hide-key \"Ctrl+Shift+F1\""
+		"\n"
+		"Report bugs at the GitHub repository <https://github.com/TheDcoder/mapmywindows>"
 	);
 	exit(error ? EXIT_FAILURE : EXIT_SUCCESS);
 }
@@ -110,7 +108,7 @@ void process_cmdline_options(int argc, char *argv[]) {
 		switch (option) {
 			case 'h':
 			case '?':
-				print_help(option == '?');
+				print_help(option == '?', argv[0]);
 				break;
 			case 'v':
 				puts("mapmywindows " VERSION "\n\nWritten by Damon Harris (TheDcoder)");
