@@ -8,6 +8,8 @@
 #include <xdo.h>
 #include "xkeymacro/xkeymacro.h"
 
+#define VERSION "0.1"
+
 struct window_node {
 	Window wid;
 	int x;
@@ -85,6 +87,7 @@ void noreturn print_help(bool error) {
 		"	-s, --show-key        Set the show shortcut/macro (Default: Ctrl+Shift+F8)\n"
 		"	-x, --exit-key        Set the exit shortcut/macro (Default: Ctrl+Shift+F9)\n"
 		"	-h, --help            Show this help text\n"
+		"	-v, --version         Print the version\n"
 		"\n"
 		"Examples:\n"
 		"	mapmywindows -d \"Ctrl+Shift+F1\" -s \"Ctrl+Shift+F2\"    Change the default hide and show shortcuts\n"
@@ -96,18 +99,22 @@ void noreturn print_help(bool error) {
 void process_cmdline_options(int argc, char *argv[]) {
 	struct option long_options[] = {
 		{"help", no_argument, NULL, 'h'},
+		{"version", no_argument, NULL, 'v'},
 		{"hide-key", required_argument, NULL, 'd'},
 		{"show-key", required_argument, NULL, 's'},
 		{"exit-key", required_argument, NULL, 'x'},
 		{NULL, 0, NULL, 0}
 	};
 	int option;
-	while ((option = getopt_long(argc, argv, "hd:s:x:", long_options, NULL)) != -1) {
+	while ((option = getopt_long(argc, argv, "hvd:s:x:", long_options, NULL)) != -1) {
 		switch (option) {
 			case 'h':
 			case '?':
 				print_help(option == '?');
 				break;
+			case 'v':
+				puts("mapmywindows " VERSION "\n\nWritten by Damon Harris (TheDcoder)");
+				exit(EXIT_SUCCESS);
 			case 'd':
 				hide_shortcut = optarg;
 				printf("Hide shortcut: %s\n", optarg);
