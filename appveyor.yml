@@ -6,11 +6,20 @@ install:
 - sh: |
     git submodule init
     git submodule update
-    sudo apt-get --assume-yes install libxdo3 libxdo-dev libx11-6 libx11-dev
+    sudo apt-get --assume-yes install libxdo3 libxdo-dev libx11-6 libx11-dev help2man
 
 build_script:
-- sh: make
+- sh: |
+    make
+    make mapmywindows.1.gz
+
+after_build:
+- sh: |
+    ./mapmywindows --version
+    ./mapmywindows --help
 
 artifacts:
 - path: mapmywindows
   name: Main Binary
+- path: mapmywindows.1.gz
+  name: Manual Page
