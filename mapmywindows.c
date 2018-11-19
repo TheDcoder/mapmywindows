@@ -50,8 +50,11 @@ int main(int argc, char *argv[]) {
 	};
 	
 	// Grab the keys (keyboard shortcuts/macros)
+	printf("Hide shortcut: %s\n", hide_shortcut);
 	struct XKeyMacro *hide_macro = xkeymacro_add_simple(xkeymacro_instance, hide_shortcut);
+	printf("Show shortcut: %s\n", show_shortcut);
 	struct XKeyMacro *show_macro = xkeymacro_add_simple(xkeymacro_instance, show_shortcut);
+	printf("Exit shortcut: %s\n", exit_shortcut);
 	struct XKeyMacro *exit_macro = xkeymacro_add_simple(xkeymacro_instance, exit_shortcut);
 	
 	// Wait for events (X event loop)
@@ -115,15 +118,12 @@ void process_cmdline_options(int argc, char *argv[]) {
 				exit(EXIT_SUCCESS);
 			case 'd':
 				hide_shortcut = optarg;
-				printf("Hide shortcut: %s\n", optarg);
 				break;
 			case 's':
 				show_shortcut = optarg;
-				printf("Show shortcut: %s\n", optarg);
 				break;
 			case 'x':
 				exit_shortcut = optarg;
-				printf("Exit shortcut: %s\n", optarg);
 				break;
 		}
 	}
