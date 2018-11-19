@@ -12,8 +12,8 @@ $(man).gz: $(program)
 	gzip $(man)
 
 install: $(program) $(man).gz
-	cp $(program) /usr/bin
-	cp $(man).gz /usr/share/man/man1
+	install $(program) /usr/bin
+	install $(man).gz /usr/share/man/man1
 
 uninstall:
 	rm /usr/bin/$(program)
