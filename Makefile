@@ -19,6 +19,6 @@ uninstall:
 	rm /usr/bin/$(program)
 	rm /usr/share/man/man1/$(man).gz
 
-clean: $(program) $(man).gz
-	rm $(program)
+clean:
+	-rm $(program)
 	-rm $(man).gz
