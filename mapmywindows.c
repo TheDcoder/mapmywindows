@@ -1,4 +1,5 @@
 #include <getopt.h>
+#include <signal.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdio.h>
@@ -18,11 +19,13 @@ struct window_node {
 	struct window_node *next;
 };
 
+void noreturn clean_exit(int signal);
 void noreturn print_help(bool error, char *program_name);
 void process_cmdline_options(int argc, char *argv[]);
 void hide_window(void);
 void show_window(void);
 
+struct XKeyMacroInstance *xkeymacro_instance;
 xdo_t *xdo_instance;
 struct window_node *current_window = NULL;
 
@@ -40,7 +43,7 @@ int main(int argc, char *argv[]) {
 		puts("Failed to get current X display");
 		return EXIT_FAILURE;
 	}
-	struct XKeyMacroInstance *xkeymacro_instance = xkeymacro_new_instance(display);
+	xkeymacro_instance = xkeymacro_new_instance(display);
 	
 	// Create a new xdo instance
 	xdo_instance = xdo_new_with_opened_display(display, NULL, true);
@@ -57,6 +60,10 @@ int main(int argc, char *argv[]) {
 	printf("Exit shortcut: %s\n", exit_shortcut);
 	struct XKeyMacro *exit_macro = xkeymacro_add_simple(xkeymacro_instance, exit_shortcut);
 	
+	// Register signal handler
+	signal(SIGTERM, clean_exit);
+	signal(SIGINT, clean_exit);
+	
 	// Wait for events (X event loop)
 	struct XKeyMacro *macro;
 	while (true) {
@@ -67,12 +74,16 @@ int main(int argc, char *argv[]) {
 			show_window();
 		} else if (macro == exit_macro) {
 			// Cleanup and exit
-			xkeymacro_free(xkeymacro_instance);
-			xdo_free(xdo_instance);
-			puts("Exiting!");
-			return EXIT_SUCCESS;
+			clean_exit(0);
 		}
 	}
+}
+
+void noreturn clean_exit(int signal) {
+	xkeymacro_free(xkeymacro_instance);
+	xdo_free(xdo_instance);
+	puts("Exiting!");
+	exit(EXIT_SUCCESS);
 }
 
 void noreturn print_help(bool error, char *program_name) {
