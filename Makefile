@@ -2,7 +2,7 @@ compiler = gcc
 program = mapmywindows
 man = $(program).1
 
-.PHONY: install uninstall clean
+.PHONY: install uninstall package clean
 
 $(program): $(program).c
 	$(compiler) -O2 -Wall -o $(program) xkeymacro/xkeymacro.c $(program).c -lX11 -lxdo
@@ -10,6 +10,9 @@ $(program): $(program).c
 $(man).gz: $(program)
 	help2man --no-info --output $(man) ./$(program)
 	gzip $(man)
+
+package: $(program) $(man).gz
+	tar --create --gzip --file $(program).tar.gz $(program) $(man).gz
 
 install: $(program) $(man).gz
 	install $(program) /usr/bin
@@ -22,3 +25,4 @@ uninstall:
 clean:
 	-rm $(program)
 	-rm $(man).gz
+	-rm $(program).tar.gz

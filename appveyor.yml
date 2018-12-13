@@ -10,8 +10,7 @@ install:
 
 build_script:
 - sh: |
-    make
-    make mapmywindows.1.gz
+    make package
 
 after_build:
 - sh: |
@@ -19,6 +18,8 @@ after_build:
     ./mapmywindows --help
 
 artifacts:
+- path: mapmywindows.tar.gz
+  name: Binary Package
 - path: mapmywindows
   name: Main Binary
 - path: mapmywindows.1.gz
