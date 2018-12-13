@@ -5,7 +5,7 @@ man = $(program).1
 .PHONY: install uninstall clean
 
 $(program): $(program).c
-	$(compiler) -Wall -o $(program) xkeymacro/xkeymacro.c $(program).c -lX11 -lxdo
+	$(compiler) -O2 -Wall -o $(program) xkeymacro/xkeymacro.c $(program).c -lX11 -lxdo
 
 $(man).gz: $(program)
 	help2man --no-info --output $(man) ./$(program)
