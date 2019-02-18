@@ -14,6 +14,10 @@ A small progarm to show and hide windows in X window system. Most Linux distribu
 
 For more use `mapmywindows -h` to display the help text with usage syntax and options.
 
+## Download
+
+Binary packages are available on the [releases](https://github.com/TheDcoder/mapmywindows/releases) page, but may fail to run due to missing dependencies or differences between OS distributions, the packages are compiled in Fedora. Especially the library `libxdo` might be missing and you may have to install it before mapmywindows works.
+
 ## Compiling and Installing
 
 I have developed and tested exclusively on Fedora KDE Spin, so these instructions should work well if you are using Fedora. 
