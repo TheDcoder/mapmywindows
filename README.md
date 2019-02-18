@@ -12,7 +12,7 @@ A small progarm to show and hide windows in X window system. Most Linux distribu
 2. `Ctrl+Shift+F8` - Show the last hidden window
 3. `Ctrl+Shift+F9` - Exit the program
 
-For more use `mapmywindows -h` to display the help text with usage syntax and options.
+For more usage details, try the `mapmywindows --help` command to display the help text with the complete syntax and options.
 
 ## Download
 
