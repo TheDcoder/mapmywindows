@@ -26,10 +26,11 @@ I have developed and tested exclusively on Fedora KDE Spin, so these instruction
 1. `libX11` or `Xlib` - Library to communicate with X
 2. `libxdo` - Helper library which contains useful functions related to X
 3. `libxkeymacro` - Own hand-crafted library to deal with keyboard macro parsing and handling, already included in the repository  as a sub-module!
+4. `help2man` - Program to generate man documentation from `--help` text (_build-time dependency only_)
 
 Install all dependencies on Fedora:
 ```
-$ sudo dnf install libX11 libxdo
+$ sudo dnf install libX11 libxdo help2man
 $ sudo dnf install libX11-devel libxdo-devel # Development headers for compiling
 ```
 
