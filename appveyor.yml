@@ -1,6 +1,6 @@
 version: 0.1.{build}
 
-image: Ubuntu1804
+image: Ubuntu2004
 
 install:
 - sh: |
